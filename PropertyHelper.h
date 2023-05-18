@@ -5,7 +5,7 @@
 #define AUTO_PROPERTY(TYPE, NAME)                                                                                      \
     Q_PROPERTY(TYPE NAME READ NAME WRITE NAME NOTIFY NAME##Changed)                                                    \
 public:                                                                                                                \
-    auto NAME() const->TYPE                                                                                            \
+    [[nodiscard]] auto NAME() const->TYPE                                                                              \
     {                                                                                                                  \
         return a_##NAME;                                                                                               \
     }                                                                                                                  \
@@ -23,7 +23,7 @@ private:                                                                        
 #define AUTO_PROPERTY2(TYPE, NAME, DEFAULT)                                                                            \
     Q_PROPERTY(TYPE NAME READ NAME WRITE NAME NOTIFY NAME##Changed)                                                    \
 public:                                                                                                                \
-    auto NAME() const->TYPE                                                                                            \
+    [[nodiscard]] auto NAME() const->TYPE                                                                              \
     {                                                                                                                  \
         return a_##NAME;                                                                                               \
     }                                                                                                                  \
@@ -41,7 +41,7 @@ private:                                                                        
 #define AUTO_PROPERTY_VAL(TYPE, NAME)                                                                                  \
     Q_PROPERTY(TYPE NAME READ NAME WRITE NAME NOTIFY NAME##Changed)                                                    \
 public:                                                                                                                \
-    auto NAME() const->TYPE                                                                                            \
+    [[nodiscard]] auto NAME() const->TYPE                                                                              \
     {                                                                                                                  \
         return a_##NAME;                                                                                               \
     }                                                                                                                  \
@@ -59,7 +59,7 @@ private:                                                                        
 #define AUTO_PROPERTY_VAL2(TYPE, NAME, DEFAULT)                                                                        \
     Q_PROPERTY(TYPE NAME READ NAME WRITE NAME NOTIFY NAME##Changed)                                                    \
 public:                                                                                                                \
-    auto NAME() const->TYPE                                                                                            \
+    [[nodiscard]] auto NAME() const->TYPE                                                                              \
     {                                                                                                                  \
         return a_##NAME;                                                                                               \
     }                                                                                                                  \
@@ -77,7 +77,7 @@ private:                                                                        
 #define READONLY_PROPERTY(TYPE, NAME)                                                                                  \
     Q_PROPERTY(TYPE NAME READ NAME CONSTANT)                                                                           \
 public:                                                                                                                \
-    auto NAME() const->TYPE                                                                                            \
+    [[nodiscard]] auto NAME() const->TYPE                                                                              \
     {                                                                                                                  \
         return a_##NAME;                                                                                               \
     }                                                                                                                  \
@@ -85,10 +85,21 @@ public:                                                                         
 private:                                                                                                               \
     TYPE a_##NAME;
 
+#define READONLY_PROPERTY2(TYPE, NAME, DEFAULT)                                                                        \
+    Q_PROPERTY(TYPE NAME READ NAME CONSTANT)                                                                           \
+public:                                                                                                                \
+    [[nodiscard]] auto NAME() const->TYPE                                                                              \
+    {                                                                                                                  \
+        return a_##NAME;                                                                                               \
+    }                                                                                                                  \
+                                                                                                                       \
+private:                                                                                                               \
+    TYPE a_##NAME = DEFAULT;
+
 #define READ_PROPERTY(TYPE, NAME)                                                                                      \
     Q_PROPERTY(TYPE NAME READ NAME NOTIFY NAME##Changed)                                                               \
 public:                                                                                                                \
-    auto NAME() const->TYPE                                                                                            \
+    [[nodiscard]] auto NAME() const->TYPE                                                                              \
     {                                                                                                                  \
         return a_##NAME;                                                                                               \
     }                                                                                                                  \
@@ -96,3 +107,15 @@ public:                                                                         
                                                                                                                        \
 private:                                                                                                               \
     TYPE a_##NAME;
+
+#define READ_PROPERTY2(TYPE, NAME, DEFAULT)                                                                            \
+    Q_PROPERTY(TYPE NAME READ NAME NOTIFY NAME##Changed)                                                               \
+public:                                                                                                                \
+    [[nodiscard]] auto NAME() const->TYPE                                                                              \
+    {                                                                                                                  \
+        return a_##NAME;                                                                                               \
+    }                                                                                                                  \
+    Q_SIGNAL void NAME##Changed(TYPE value);                                                                           \
+                                                                                                                       \
+private:                                                                                                               \
+    TYPE a_##NAME = DEFAULT;
